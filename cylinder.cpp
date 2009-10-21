@@ -26,7 +26,8 @@ void cylinder( D3DXVECTOR3 base_center, float radius, float height,
             res_vertices[vertex] = Vertex( base_center
                                          + D3DXVECTOR3( radius*cos(step*STEP_ANGLE),
                                                         radius*sin(step*STEP_ANGLE),
-                                                        level*STEP_UP)
+                                                        level*STEP_UP),
+                                            static_cast<float>(level)/static_cast<float>(CYLINDER_EDGES_PER_HEIGHT)
                                           );
             if( level != 0 )
             {

@@ -1,6 +1,7 @@
 vs_1_1
 dcl_position v0
 dcl_color v1
+dcl_texcoord v2
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c0 is FINAL_RADIUS            ;;
@@ -30,6 +31,8 @@ mad r1, r1, c1, r3
 
 mul r2.xyz, v0.xyz, r1.x
 mov r2.w, c111.w
+
+mul r2.x, r2.x, v2.x
 
 m4x4 oPos, r2, c2
 mov oD0, v1
