@@ -64,6 +64,7 @@ void Application::init_device()
                                       D3DCREATE_HARDWARE_VERTEXPROCESSING,
                                       &present_parameters, &device ) ) )
         throw D3DInitError();
+    check_state( device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ) );
     toggle_wireframe();
 }
 
@@ -102,7 +103,7 @@ void Application::render()
     //   c0 is the final radius
     check_render( device->SetVertexShaderConstantF(0, TetraFloat(FINAL_RADIUS), 1) );
     float time = static_cast<float>( clock() )/static_cast<float>( CLOCKS_PER_SEC );
-    float t = (sin(MORPHING_OMEGA*time) + 1.0f)/2.0f; // parameter of morhing: 0 to 1
+    float t = 0; // parameter of morhing: 0 to 1
     //   c1 is the parameter t
     check_render( device->SetVertexShaderConstantF(1, TetraFloat(t), 1) );
     //   c2-c5 is the matrix
@@ -204,12 +205,10 @@ void Application::toggle_wireframe()
 
     if( wireframe )
     {
-        check_state( device->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ) );
         check_state( device->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME ) );
     }
     else
     {
-        check_state( device->SetRenderState( D3DRS_CULLMODE, D3DCULL_CW ) );
         check_state( device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID ) );
     }
 }

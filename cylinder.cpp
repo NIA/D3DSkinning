@@ -1,11 +1,10 @@
 #include "cylinder.h"
 
 const Index CYLINDER_EDGES_PER_BASE = 20;
-const Index CYLINDER_EDGES_PER_HEIGHT = 1;
+const Index CYLINDER_EDGES_PER_HEIGHT = 7;
 
 extern const Index CYLINDER_VERTICES_COUNT = CYLINDER_EDGES_PER_BASE*(CYLINDER_EDGES_PER_HEIGHT + 1);
-extern const DWORD CYLINDER_INDICES_COUNT = 2*CYLINDER_EDGES_PER_BASE*CYLINDER_EDGES_PER_HEIGHT // indices per CYLINDER_EDGES_PER_HEIGHT levels
-                                          + 2*( CYLINDER_EDGES_PER_HEIGHT - 1 );  // plus two triangles to move from one level to another
+extern const DWORD CYLINDER_INDICES_COUNT = 2*(CYLINDER_EDGES_PER_BASE + 1)*CYLINDER_EDGES_PER_HEIGHT; // indices per CYLINDER_EDGES_PER_HEIGHT levels
 
 void cylinder( D3DXVECTOR3 base_center, float radius, float height,
                 Vertex *res_vertices, Index *res_indices)
@@ -33,6 +32,11 @@ void cylinder( D3DXVECTOR3 base_center, float radius, float height,
             {
                 res_indices[index++] = vertex - CYLINDER_EDGES_PER_BASE; // from previous level
                 res_indices[index++] = vertex;                           // from current level
+                if( step == CYLINDER_EDGES_PER_BASE - 1 ) // last step
+                {
+                    res_indices[index++] = vertex - 2*CYLINDER_EDGES_PER_BASE + 1; // first from previuos level
+                    res_indices[index++] = vertex - CYLINDER_EDGES_PER_BASE + 1; // first from current level
+                }
             }
             ++vertex;
         }
