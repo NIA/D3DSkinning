@@ -182,6 +182,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cylinder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -213,6 +217,10 @@
 			</File>
 			<File
 				RelativePath=".\Camera.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cylinder.h"
 				>
 			</File>
 			<File

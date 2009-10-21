@@ -1,52 +1,40 @@
 #include "main.h"
 #include "Application.h"
+#include "cylinder.h"
 
 INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
 {
     srand( static_cast<unsigned>( time(NULL) ) );
 
+    Vertex * cylinder_vertices;
+    Index * cylinder_indices;
     try
     {
         Application app;
+        
+        cylinder_vertices = new Vertex[CYLINDER_VERTICES_COUNT];
+        cylinder_indices = new Index[CYLINDER_INDICES_COUNT];
+        
+        const float height = 2.0f;
+        cylinder( D3DXVECTOR3(0,0,-height/2), 1.0f, height, cylinder_vertices, cylinder_indices );
 
-        const Index PLANES_PER_PYRAMID = 8;
-        const Vertex pyramid_vertices[]=
-        {
-            Vertex(D3DXVECTOR3(  1.0f, -1.0f,  0.00f )),
-            Vertex(D3DXVECTOR3( -1.0f, -1.0f,  0.00f )),
-            Vertex(D3DXVECTOR3( -1.0f,  1.0f,  0.00f )),
-            Vertex(D3DXVECTOR3(  1.0f,  1.0f,  0.00f )),
-            Vertex(D3DXVECTOR3(  0.0f,  0.0f,  1.41f )),
-            Vertex(D3DXVECTOR3(  0.0f,  0.0f, -1.41f )),
-        };
-        const unsigned VERTICES_COUNT = sizeof(pyramid_vertices)/sizeof(pyramid_vertices[0]);
-        const Index pyramid_indices[PLANES_PER_PYRAMID*VERTICES_PER_TRIANGLE] =
-        {
-            0, 4, 3,
-            3, 4, 2,
-            2, 4, 1,
-            1, 4, 0,
+        Model cylinder( app.get_device(),
+                        D3DPT_TRIANGLESTRIP,
+                        cylinder_vertices,
+                        CYLINDER_VERTICES_COUNT,
+                        cylinder_indices,
+                        CYLINDER_INDICES_COUNT,
+                        CYLINDER_INDICES_COUNT - 2 );
 
-            0, 3, 5,
-            3, 2, 5,
-            2, 1, 5,
-            1, 0, 5,
-        };
-        const unsigned INDICES_COUNT = sizeof(pyramid_indices)/sizeof(pyramid_indices[0]);
-
-        Model pyramid(  app.get_device(),
-                        D3DPT_TRIANGLELIST,
-                        pyramid_vertices,
-                        VERTICES_COUNT,
-                        pyramid_indices,
-                        INDICES_COUNT,
-                        INDICES_COUNT/VERTICES_PER_TRIANGLE );
-
-        app.add_model(pyramid);
+        app.add_model(cylinder);
         app.run();
+        delete_array(&cylinder_indices);
+        delete_array(&cylinder_vertices);
     }
     catch(RuntimeError &e)
     {
+        delete_array(&cylinder_indices);
+        delete_array(&cylinder_vertices);
         const TCHAR *MESSAGE_BOX_TITLE = _T("Morphing error!");
         MessageBox(NULL, e.message(), MESSAGE_BOX_TITLE, MB_OK | MB_ICONERROR);
         return -1;

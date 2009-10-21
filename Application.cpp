@@ -7,7 +7,7 @@ namespace
     const int        WINDOW_SIZE = 600;
     const D3DCOLOR   BACKGROUND_COLOR = D3DCOLOR_XRGB( 64, 64, 74 );
     const bool       INITIAL_WIREFRAME_STATE = true;
-    const float      MORPHING_PERIOD = 1.9f;
+    const float      MORPHING_PERIOD = 3e8f;
     const float      MORPHING_OMEGA = 2.0f*D3DX_PI/MORPHING_PERIOD;
 
     const float      FINAL_RADIUS = 1.41f;
