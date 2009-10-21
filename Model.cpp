@@ -14,11 +14,11 @@ Model::Model(   IDirect3DDevice9 *device, D3DPRIMITIVETYPE primitive_type, const
         const unsigned vertices_size = vertices_count*sizeof(vertices[0]);
         const unsigned indices_size = indices_count*sizeof(indices[0]);
 
-        if(FAILED( device->CreateVertexBuffer( vertices_size, 0, 0, D3DPOOL_DEFAULT, &vertex_buffer, NULL ) ))
+        if(FAILED( device->CreateVertexBuffer( vertices_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &vertex_buffer, NULL ) ))
             throw VertexBufferInitError();
         
 
-        if(FAILED( device->CreateIndexBuffer( indices_size, 0, INDEX_FORMAT, D3DPOOL_DEFAULT, &index_buffer, NULL ) ))
+        if(FAILED( device->CreateIndexBuffer( indices_size, D3DUSAGE_WRITEONLY, INDEX_FORMAT, D3DPOOL_DEFAULT, &index_buffer, NULL ) ))
             throw IndexBufferInitError();
                     
 
