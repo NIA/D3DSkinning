@@ -7,8 +7,8 @@ namespace
     const int        WINDOW_SIZE = 600;
     const D3DCOLOR   BACKGROUND_COLOR = D3DCOLOR_XRGB( 64, 64, 74 );
     const bool       INITIAL_WIREFRAME_STATE = true;
-    const float      MORPHING_PERIOD = 3e8f;
-    const float      MORPHING_OMEGA = 2.0f*D3DX_PI/MORPHING_PERIOD;
+    const float      SKINNING_PERIOD = 2.0f;
+    const float      SKINNING_OMEGA = 2.0f*D3DX_PI/SKINNING_PERIOD;
 
     const float      FINAL_RADIUS = 1.41f;
 
@@ -90,6 +90,14 @@ void Application::init_shader()
     
 }
 
+D3DXMATRIX rotate_x_matrix(float angle)
+{
+    return D3DXMATRIX( 1,           0,          0, 0,
+                       0,  cos(angle), sin(angle), 0,
+                       0, -sin(angle), cos(angle), 0,
+                       0,           0,          0, 1 );
+}
+
 void Application::render()
 {
     check_render( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, BACKGROUND_COLOR, 1.0f, 0 ) );
@@ -101,9 +109,13 @@ void Application::render()
     check_render( device->SetVertexShader(shader) );
     // Setting constants
     float time = static_cast<float>( clock() )/static_cast<float>( CLOCKS_PER_SEC );
-    float t = 0; // parameter of morhing: 0 to 1
-    //   c0-c3 is the matrix
+    float angle = 1.2f*sin(SKINNING_OMEGA*time);
+    //   c0-c3 is the view matrix
     check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    //   c4-c7 is the first bone matrix
+    check_render( device->SetVertexShaderConstantF(4, rotate_x_matrix(angle), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    //   c8-c11 is the second bone matrix
+    check_render( device->SetVertexShaderConstantF(8, rotate_x_matrix(0.0f), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
     // Draw
     for ( std::list<Model*>::iterator iter = models.begin(); iter != models.end(); iter++ )
         (*iter)->draw();

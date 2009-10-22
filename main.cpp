@@ -16,7 +16,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
         cylinder_indices = new Index[CYLINDER_INDICES_COUNT];
         
         const float height = 2.0f;
-        cylinder( D3DXVECTOR3(0,0,-height/2), 1.0f, height, cylinder_vertices, cylinder_indices );
+        cylinder( D3DXVECTOR3(0,0,-height/2), 0.7f, height, cylinder_vertices, cylinder_indices );
 
         Model cylinder( app.get_device(),
                         D3DPT_TRIANGLESTRIP,
