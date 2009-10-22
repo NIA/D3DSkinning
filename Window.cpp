@@ -2,8 +2,8 @@
 
 namespace
 {
-    const TCHAR *WINDOW_CLASS = _T("Morphing");
-    const TCHAR *WINDOW_TITLE = _T("Morphing");
+    const TCHAR *WINDOW_CLASS = _T("Skinning");
+    const TCHAR *WINDOW_TITLE = _T("Skinning");
 }
 
 Window::Window(int width, int height)

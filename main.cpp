@@ -35,7 +35,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
     {
         delete_array(&cylinder_indices);
         delete_array(&cylinder_vertices);
-        const TCHAR *MESSAGE_BOX_TITLE = _T("Morphing error!");
+        const TCHAR *MESSAGE_BOX_TITLE = _T("Skinning error!");
         MessageBox(NULL, e.message(), MESSAGE_BOX_TITLE, MB_OK | MB_ICONERROR);
         return -1;
     }
