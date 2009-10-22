@@ -100,14 +100,10 @@ void Application::render()
     check_render( device->SetVertexDeclaration(vertex_decl) );
     check_render( device->SetVertexShader(shader) );
     // Setting constants
-    //   c0 is the final radius
-    check_render( device->SetVertexShaderConstantF(0, TetraFloat(FINAL_RADIUS), 1) );
     float time = static_cast<float>( clock() )/static_cast<float>( CLOCKS_PER_SEC );
     float t = 0; // parameter of morhing: 0 to 1
-    //   c1 is the parameter t
-    check_render( device->SetVertexShaderConstantF(1, TetraFloat(t), 1) );
-    //   c2-c5 is the matrix
-    check_render( device->SetVertexShaderConstantF(2, camera.get_matrix(), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    //   c0-c3 is the matrix
+    check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
     // Draw
     for ( std::list<Model*>::iterator iter = models.begin(); iter != models.end(); iter++ )
         (*iter)->draw();
