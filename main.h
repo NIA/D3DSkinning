@@ -7,6 +7,8 @@
 #include <crtdbg.h>
 #include "Error.h"
 
+#define BONES_COUNT 2
+
 inline void release_interface(IUnknown* iface)
 {
     if( iface != NULL )

@@ -24,7 +24,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, INT )
                         CYLINDER_VERTICES_COUNT,
                         cylinder_indices,
                         CYLINDER_INDICES_COUNT,
-                        CYLINDER_INDICES_COUNT - 2 );
+                        CYLINDER_INDICES_COUNT - 2,
+                        D3DXVECTOR3(0,0,-1));
 
         app.add_model(cylinder);
         app.run();

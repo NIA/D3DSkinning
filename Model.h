@@ -14,6 +14,9 @@ private:
     IDirect3DVertexBuffer9  *vertex_buffer;
     IDirect3DIndexBuffer9   *index_buffer;
 
+    D3DXVECTOR3 rotate_center;
+    D3DXMATRIX bones[BONES_COUNT];
+
     void release_interfaces();
 
 public:
@@ -23,9 +26,12 @@ public:
             unsigned vertices_count,
             const Index *indices,
             unsigned indices_count,
-            unsigned primitives_count );
+            unsigned primitives_count,
+            D3DXVECTOR3 rotate_center);
     
     virtual void draw() const;
+    void set_bones(float time);
+    const D3DXMATRIX &get_bone(unsigned number) const;
 
     virtual ~Model();
 };

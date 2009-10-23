@@ -16,9 +16,9 @@ inline int rand_col_comp()
 class Vertex
 {
 public:
-    D3DXVECTOR3 pos; // The position for the vertex
-    D3DCOLOR color;  // The vertex color
-    float weights[2]; // Weights for skinning
+    D3DXVECTOR3 pos;            // The position for the vertex
+    D3DCOLOR color;             // The vertex color
+    float weights[BONES_COUNT]; // Weights for skinning
 private:
     void set_weight(float weight)
     {

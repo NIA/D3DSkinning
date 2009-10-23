@@ -1,6 +1,5 @@
 #include "Application.h"
 #include <time.h>
-#include "matrices.h"
 
 namespace
 {
@@ -8,12 +7,11 @@ namespace
     const int        WINDOW_SIZE = 600;
     const D3DCOLOR   BACKGROUND_COLOR = D3DCOLOR_XRGB( 64, 64, 74 );
     const bool       INITIAL_WIREFRAME_STATE = true;
-    const float      SKINNING_PERIOD = 2.0f;
-    const float      SKINNING_OMEGA = 2.0f*D3DX_PI/SKINNING_PERIOD;
 
     const float      FINAL_RADIUS = 1.41f;
 
     const unsigned   D3DXVEC_SIZE = sizeof(D3DXVECTOR4);
+    const unsigned   VECTORS_IN_MATRIX = sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4);
 }
 
 class TetraFloat
@@ -102,16 +100,22 @@ void Application::render()
     check_render( device->SetVertexShader(shader) );
     // Setting constants
     float time = static_cast<float>( clock() )/static_cast<float>( CLOCKS_PER_SEC );
-    float angle = sin(SKINNING_OMEGA*time);
     //   c0-c3 is the view matrix
-    check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
-    //   c4-c7 is the first bone matrix
-    check_render( device->SetVertexShaderConstantF(4, rotate_x_matrix(angle, D3DXVECTOR3(0,0,-1)), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
-    //   c8-c11 is the second bone matrix
-    check_render( device->SetVertexShaderConstantF(8, rotate_x_matrix(0), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), VECTORS_IN_MATRIX) );
     // Draw
     for ( std::list<Model*>::iterator iter = models.begin(); iter != models.end(); iter++ )
+    {
+        unsigned offset = VECTORS_IN_MATRIX;
+        //   c4-c7 is the first bone matrix
+        //   c8-c11 is the second bone matrix
+        (*iter)->set_bones(time); // re-initialize bones
+        for(unsigned i = 0; i < BONES_COUNT; ++i)
+        {
+            check_render( device->SetVertexShaderConstantF( offset, (*iter)->get_bone(i), VECTORS_IN_MATRIX) );
+            offset += VECTORS_IN_MATRIX;
+        }
         (*iter)->draw();
+    }
     // End the scene
     check_render( device->EndScene() );
     
