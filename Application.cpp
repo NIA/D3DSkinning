@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <time.h>
+#include "matrices.h"
 
 namespace
 {
@@ -90,14 +91,6 @@ void Application::init_shader()
     
 }
 
-D3DXMATRIX rotate_x_matrix(float angle)
-{
-    return D3DXMATRIX( 1,           0,          0, 0,
-                       0,  cos(angle), sin(angle), 0,
-                       0, -sin(angle), cos(angle), 0,
-                       0,           0,          0, 1 );
-}
-
 void Application::render()
 {
     check_render( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, BACKGROUND_COLOR, 1.0f, 0 ) );
@@ -109,13 +102,13 @@ void Application::render()
     check_render( device->SetVertexShader(shader) );
     // Setting constants
     float time = static_cast<float>( clock() )/static_cast<float>( CLOCKS_PER_SEC );
-    float angle = 1.2f*sin(SKINNING_OMEGA*time);
+    float angle = sin(SKINNING_OMEGA*time);
     //   c0-c3 is the view matrix
     check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
     //   c4-c7 is the first bone matrix
-    check_render( device->SetVertexShaderConstantF(4, rotate_x_matrix(angle), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    check_render( device->SetVertexShaderConstantF(4, rotate_x_matrix(angle, D3DXVECTOR3(0,0,-1)), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
     //   c8-c11 is the second bone matrix
-    check_render( device->SetVertexShaderConstantF(8, rotate_x_matrix(0.0f), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
+    check_render( device->SetVertexShaderConstantF(8, rotate_x_matrix(0), sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4)) );
     // Draw
     for ( std::list<Model*>::iterator iter = models.begin(); iter != models.end(); iter++ )
         (*iter)->draw();

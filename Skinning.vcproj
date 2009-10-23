@@ -232,6 +232,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\matrices.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Model.h"
 				>
 			</File>
