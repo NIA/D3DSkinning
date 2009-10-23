@@ -8,29 +8,13 @@ namespace
     const D3DCOLOR   BACKGROUND_COLOR = D3DCOLOR_XRGB( 64, 64, 74 );
     const bool       INITIAL_WIREFRAME_STATE = true;
 
-    const float      FINAL_RADIUS = 1.41f;
-
     const unsigned   D3DXVEC_SIZE = sizeof(D3DXVECTOR4);
     const unsigned   VECTORS_IN_MATRIX = sizeof(D3DXMATRIX)/sizeof(D3DXVECTOR4);
 }
 
-class TetraFloat
-// Contains 4 floats to give a constant float to a shader as a 4-vector
-{
-    float same_floats[D3DXVEC_SIZE];
-public:
-    TetraFloat(float f)
-    {
-        for(unsigned i = 0; i < D3DXVEC_SIZE - 1; ++i)
-            same_floats[i] = f;
-        same_floats[D3DXVEC_SIZE - 1] = 1.0f;
-    }
-    operator const float*() const { return same_floats; }
-};
-
 Application::Application() :
     d3d(NULL), device(NULL), vertex_decl(NULL), shader(NULL),
-    window(WINDOW_SIZE, WINDOW_SIZE), camera(2.84f, 1.44f, 0.94f) // Constants selected for better view of pyramid
+    window(WINDOW_SIZE, WINDOW_SIZE), camera(2.7f, 1.5f, 0.0f) // Constants selected for better view of cylinder
 {
     try
     {
