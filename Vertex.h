@@ -18,13 +18,26 @@ class Vertex
 public:
     D3DXVECTOR3 pos; // The position for the vertex
     D3DCOLOR color;  // The vertex color
-    float weight;    // Weight for skinning
-
-    Vertex() : pos(), color(0), weight(1.0f) {}
-    Vertex(D3DXVECTOR3 pos, D3DCOLOR color, float weight) : pos(pos), color(color), weight(weight) {}
-    Vertex(D3DXVECTOR3 pos, float weight) : pos(pos), weight(weight)
+    float weights[2]; // Weights for skinning
+private:
+    void set_weight(float weight)
+    {
+        weights[0] = weight;
+        weights[1] = 1 - weight;
+    }
+public:
+    Vertex() : pos(), color(0)
+    {
+        set_weight(1.0f);
+    }
+    Vertex(D3DXVECTOR3 pos, D3DCOLOR color, float weight) : pos(pos), color(color)
+    {
+        set_weight(weight);
+    }
+    Vertex(D3DXVECTOR3 pos, float weight) : pos(pos)
     {
         color = D3DCOLOR_XRGB( rand_col_comp(), rand_col_comp(), rand_col_comp() );
+        set_weight(weight);
     }
 };
 

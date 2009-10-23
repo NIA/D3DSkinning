@@ -13,18 +13,14 @@ dcl_texcoord v2
 ;; r0 is vertex after 1st bone   ;;
 ;; r1 is vertex after 2nd bone   ;;
 ;; r2 is transformed vertex      ;;
-;;                               ;;
-;; r3 is 2nd weight (1st is v2)  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 def c111, 1.0, 1.0, 1.0, 1.0 ;constant one
 
-add r3, -v2, c111
-
 m4x4 r0, v0, c4
 mul r0.xyz, r0.xyz, v2.x
 m4x4 r1, v0, c8
-mul r1.xyz, r1.xyz, r3.x
+mul r1.xyz, r1.xyz, v2.y
 
 add r1.xyz, r0.xyz, r1.xyz
 
