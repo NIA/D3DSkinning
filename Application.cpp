@@ -87,7 +87,8 @@ void Application::render()
     //   c0-c3 is the view matrix
     check_render( device->SetVertexShaderConstantF(0, camera.get_matrix(), VECTORS_IN_MATRIX) );
     // Draw
-    for ( std::list<Model*>::iterator iter = models.begin(); iter != models.end(); iter++ )
+    std::list<Model*>::iterator end = models.end();
+    for ( std::list<Model*>::iterator iter = models.begin(); iter != end; ++iter )
     {
         unsigned offset = VECTORS_IN_MATRIX;
         //   c4-c7 is the first bone matrix
